@@ -20,7 +20,10 @@ while not doExit:
   fx += fVx
   fy += fVy
   screen.fill((51, 42, 100))
-  pygame.draw.rect(screen, (0, 0, 255), (50, 100, 600, 350))
+  s = pygame.Surface((600,350))  # the size of your rect
+  s.set_alpha(75)                # alpha level
+  s.fill((0,0,255))           # this fills the entire surface
+  screen.blit(s, (50,100))    # (0,0) are the top-left coordinates
   pygame.draw.rect(screen, (105,56,0), (40, 450, 620, 100))
   pygame.draw.rect(screen, (255, 255, 255), (50, 50, 600, 400), 10)
   pygame.draw.rect(screen, (0,0,0), (50, 50, 600, 400), 5)
