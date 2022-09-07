@@ -3,7 +3,7 @@ import random
 
 pygame.init()
 
-screen = pygame.display.set_mode((700,500))
+screen = pygame.display.set_mode((700, 500))
 pygame.display.set_caption("Aquarium")
 
 fx = 350
@@ -21,83 +21,79 @@ doExit = False
 w = 200
 while not doExit:
 
-      clock.tick(60)
-      event = pygame.event.wait(10)
-      xpos = 0
-      ypos = 0
-      mousePos = (xpos, ypos)
-
-
+    clock.tick(60)
+    event = pygame.event.wait(10)
+    xpos = 0
+    ypos = 0
+    mousePos = (xpos, ypos)
 
     #Input Section---------------------------------------------------------
-      if event.type == pygame.MOUSEBUTTONDOWN:#CLICK
-            mousePos = event.pos
-            
-      if event.type == pygame.MOUSEBUTTONUP:
-            draw = False
+    if event.type == pygame.MOUSEBUTTONDOWN:  #CLICK
+        mousePos = event.pos
+
+    if event.type == pygame.MOUSEBUTTONUP:
+        draw = False
 
 #       if event.type == pygame.MOUSEMOTION:
 #             mousePos = event.pos
 
+    if event.type == pygame.QUIT:  #close game window
+        break
 
-      if event.type == pygame.QUIT: #close game window
-            break
-        
-      
-
-        
-      if w > 200:
-          w = 200
-      if fx < 60 or fx + 20 > 640:
+    if w > 200:
+        w = 200
+    if fx < 60 or fx + 20 > 640:
         fVx *= -1
-      if fy < 100 or fy + 20 > 440:
+    if fy < 100 or fy + 20 > 440:
         fVy *= -1
-        
-      if fx2 < 60 or fx2 + 20 > 640:
+
+    if fx2 < 60 or fx2 + 20 > 640:
         fVx2 *= -1
-      if fy2 < 100 or fy2 + 20 > 440:
+    if fy2 < 100 or fy2 + 20 > 440:
         fVy2 *= -1
-      
-      fx += fVx
-      fy += fVy
-      fx2 += fVx2
-      fy2 += fVy2
 
-      screen.fill((51, 42, 100))
-      #Fish drawn to the screen
-      pygame.draw.rect(screen, (255, 137, 0), (fx, fy, 20, 20))
-      pygame.draw.rect(screen, (220, 12, 100), (fx2, fy2, 20, 20))
-      #transparent water
-      s = pygame.Surface((600,350))  # the size of your rect
-      s.set_alpha(75)                # alpha level
-      s.fill((0,0,255))           # this fills the entire surface
-      screen.blit(s, (50,100))    # (0,0) are the top-left coordinates
-      
-      #checks if red button is being pressed and will feed the fish
-      
-      if mousePos[0] > 600 and mousePos[0] < 700 and mousePos[1] > 400 and mousePos[1] < 500:
-            print("fed")
-            w += 50
-            for i in range(5):
-                x = random.randrange(50, 640)
-                y = random.randrange(100, 140)
-                pygame.draw.rect(screen, (200,150,0), (x, y, 10, 10))   
-      else:
-            w -=  .1
-      if w > 200:
-          w = 200
-      pygame.draw.rect(screen, (105,56,0), (40, 450, 620, 100))
-      pygame.draw.rect(screen, (85,36,0), (40, 450, 620, 100), 5)
-      pygame.draw.rect(screen, (255, 255, 255), (50, 50, 600, 400), 10)
-      pygame.draw.rect(screen, (0,0,0), (50, 50, 600, 400), 5)
-      pygame.draw.rect(screen, (0,0,0), (45, 50, 610, 25))
-      
-      
-      pygame.draw.circle(screen, (255, 0, 0), (650, 450), 50)
-      pygame.draw.rect(screen, (0, 0, 0), (10, 20, 200, 20))
-      pygame.draw.rect(screen, (0, 255, 0), (10, 20, w, 20))
-      
+    fx += fVx
+    fy += fVy
+    fx2 += fVx2
+    fy2 += fVy2
+    if w == 0:
+      doExit = True
+    screen.fill((51, 42, 100))
+    #Fish drawn to the screen
+    pygame.draw.rect(screen, (255, 137, 0), (fx, fy, 20, 20))
+    pygame.draw.rect(screen, (220, 12, 100), (fx2, fy2, 20, 20))
+    #transparent water
+    s = pygame.Surface((600, 350))  # the size of your rect
+    s.set_alpha(75)  # alpha level
+    s.fill((0, 0, 255))  # this fills the entire surface
+    screen.blit(s, (50, 100))  # (0,0) are the top-left coordinates
 
+    #checks if red button is being pressed and will feed the fish
 
-      pygame.display.flip()
+    if mousePos[0] > 600 and mousePos[0] < 700 and mousePos[
+            1] > 400 and mousePos[1] < 500:
+        print("fed")
+        w += 50
+        for i in range(5):
+            x = random.randrange(50, 640)
+            y = random.randrange(100, 140)
+            pygame.draw.rect(screen, (200, 150, 0), (x, y, 10, 10))
+    else:
+        w -= .1
+    if w > 200:
+        w = 200
+    if w < 0:
+      w = 0
+    pygame.draw.rect(screen, (105, 56, 0), (40, 450, 620, 100))
+    pygame.draw.rect(screen, (85, 36, 0), (40, 450, 620, 100), 5)
+    pygame.draw.rect(screen, (255, 255, 255), (50, 50, 600, 400), 10)
+    pygame.draw.rect(screen, (0, 0, 0), (50, 50, 600, 400), 5)
+    pygame.draw.rect(screen, (0, 0, 0), (45, 50, 610, 25))
+
+    pygame.draw.circle(screen, (255, 0, 0), (650, 450), 50)
+    pygame.draw.rect(screen, (0, 0, 0), (10, 20, 200, 20))
+    pygame.draw.rect(screen, (0, 255, 0), (10, 20, w, 20))
+
+    pygame.display.flip()
+  
 pygame.quit()
