@@ -15,6 +15,10 @@ fx2 = 300
 fy2 = 200
 fVx2 = -4
 fVy2 = 2
+
+color = (255, 137, 0)
+color2 = (220, 12, 100)
+
 clock = pygame.time.Clock()
 doExit = False
 
@@ -57,11 +61,14 @@ while not doExit:
     fx2 += fVx2
     fy2 += fVy2
     if w == 0:
-      doExit = True
+      fVy -= .01
+      fVy2 -= .01
+      if fy and fy2 <= 100:
+        doExit = True
     screen.fill((51, 42, 100))
     #Fish drawn to the screen
-    pygame.draw.rect(screen, (255, 137, 0), (fx, fy, 20, 20))
-    pygame.draw.rect(screen, (220, 12, 100), (fx2, fy2, 20, 20))
+    pygame.draw.rect(screen, (color), (fx, fy, 20, 20))
+    pygame.draw.rect(screen, (color2), (fx2, fy2, 20, 20))
     #transparent water
     s = pygame.Surface((600, 350))  # the size of your rect
     s.set_alpha(75)  # alpha level
@@ -84,6 +91,15 @@ while not doExit:
         w = 200
     if w < 0:
       w = 0
+    if w < 25:
+      color = (200,200,200)
+      color2 = (200,200,200)
+      
+        
+    else:
+      color = (255, 137, 0)
+      color2 = (220, 12, 100)
+      
     pygame.draw.rect(screen, (105, 56, 0), (40, 450, 620, 100))
     pygame.draw.rect(screen, (85, 36, 0), (40, 450, 620, 100), 5)
     pygame.draw.rect(screen, (255, 255, 255), (50, 50, 600, 400), 10)
