@@ -6,6 +6,14 @@ pygame.init()
 screen = pygame.display.set_mode((700, 500))
 pygame.display.set_caption("Aquarium")
 
+Mood = pygame.image.load('Moods.png') #load your spritesheet
+Mood.set_colorkey((255,0,255))
+
+frameWidth = 100
+frameHeight = 100
+RowNum = 0
+frameNum = 0
+
 fx = 350
 fy = 250
 fVx = 2
@@ -21,8 +29,9 @@ color2 = (220, 12, 100)
 
 clock = pygame.time.Clock()
 doExit = False
-
+D = 200
 w = 200
+tank = (0, 0, 255)
 while not doExit:
 
     clock.tick(60)
@@ -72,7 +81,7 @@ while not doExit:
     #transparent water
     s = pygame.Surface((600, 350))  # the size of your rect
     s.set_alpha(75)  # alpha level
-    s.fill((0, 0, 255))  # this fills the entire surface
+    s.fill((tank))  # this fills the entire surface
     screen.blit(s, (50, 100))  # (0,0) are the top-left coordinates
 
     #checks if red button is being pressed and will feed the fish
@@ -99,17 +108,49 @@ while not doExit:
     else:
       color = (255, 137, 0)
       color2 = (220, 12, 100)
-      
+    if mousePos[0] > 0 and mousePos[0] < 100 and mousePos[
+            1] > 400 and mousePos[1] < 500:
+        print("clean")
+        D += 20
+       
+    else:
+        D -= .1
+    if D <= 120:
+        RowNum = 1
+        tank = (0, 70, 140)
+    if D <= 90:
+        RowNum = 2
+        tank = (0, 140, 110)
+    if D <= 50:
+        RowNum = 3
+        tank = (0, 210, 40)
+    if D <= 20:
+        w -= .2
+        RowNum = 4
+    if D > 120:
+        RowNum = 0
+        tank = (0,0,255)
+    if D > 200:
+        D = 200
+    if D < 0:
+      D = 0
+    if D == 0:
+        w -= .3
+
     pygame.draw.rect(screen, (105, 56, 0), (40, 450, 620, 100))
     pygame.draw.rect(screen, (85, 36, 0), (40, 450, 620, 100), 5)
     pygame.draw.rect(screen, (255, 255, 255), (50, 50, 600, 400), 10)
     pygame.draw.rect(screen, (0, 0, 0), (50, 50, 600, 400), 5)
     pygame.draw.rect(screen, (0, 0, 0), (45, 50, 610, 25))
-
+    
+    screen.blit(Mood, (600, 0), (frameWidth*frameNum, RowNum*frameHeight, frameWidth, frameHeight))
+    
     pygame.draw.circle(screen, (255, 0, 0), (650, 450), 50)
+    pygame.draw.circle(screen, (0, 0, 255), (50, 450), 50)
     pygame.draw.rect(screen, (0, 0, 0), (10, 20, 200, 20))
     pygame.draw.rect(screen, (0, 255, 0), (10, 20, w, 20))
-
+    pygame.draw.rect(screen, (0, 0, 0), (10, 50, 200, 20))
+    pygame.draw.rect(screen, (255, 255, 0), (10, 50, D, 20))
     pygame.display.flip()
   
 pygame.quit()
