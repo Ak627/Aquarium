@@ -9,10 +9,26 @@ pygame.display.set_caption("Aquarium")
 Mood = pygame.image.load('Moods.png') #load your spritesheet
 Mood.set_colorkey((255,0,255))
 
+Goldy = pygame.image.load('Goldfish.png')
+Goldy.set_colorkey((255, 0, 255))
+
+Pinky = pygame.image.load('Pinkfish.png')
+Pinky.set_colorkey((255, 255, 255))
+
 frameWidth = 100
 frameHeight = 100
 RowNum = 0
 frameNum = 0
+
+FframeWidth = 20
+FframeHeight = 20
+FRowNum = 0
+FframeNum = 0
+
+F2frameWidth = 20
+F2frameHeight = 20
+F2RowNum = 0
+F2frameNum = 1
 
 fx = 350
 fy = 250
@@ -55,52 +71,30 @@ while not doExit:
 
     if w > 200:
         w = 200
-    if fx < 60 or fx + 20 > 640:
+    if fx < 60:
+        FframeNum = 0
+        fVx *= -1
+    if fx + 20 > 640:
+        FframeNum = 1
         fVx *= -1
     if fy < 100 or fy + 20 > 440:
         fVy *= -1
 
-    if fx2 < 60 or fx2 + 20 > 640:
+    if fx2 < 60:
+        F2frameNum = 0
+        fVx2 *= -1
+    if fx2 + 20 > 640:
+        F2frameNum = 1
         fVx2 *= -1
     if fy2 < 100 or fy2 + 20 > 440:
         fVy2 *= -1
-
-    fx += fVx
-    fy += fVy
-    fx2 += fVx2
-    fy2 += fVy2
-    if w == 0:
-      fVy -= .01
-      fVy2 -= .01
-      if fy and fy2 <= 100:
-        doExit = True
-    screen.fill((51, 42, 100))
-    #Fish drawn to the screen
-    pygame.draw.rect(screen, (color), (fx, fy, 20, 20))
-    pygame.draw.rect(screen, (color2), (fx2, fy2, 20, 20))
-    #transparent water
-    s = pygame.Surface((600, 350))  # the size of your rect
-    s.set_alpha(75)  # alpha level
-    s.fill((tank))  # this fills the entire surface
-    screen.blit(s, (50, 100))  # (0,0) are the top-left coordinates
-
-    #checks if red button is being pressed and will feed the fish
-
-    if mousePos[0] > 600 and mousePos[0] < 700 and mousePos[
-            1] > 400 and mousePos[1] < 500:
-        print("fed")
-        w += 50
-        for i in range(5):
-            x = random.randrange(50, 640)
-            y = random.randrange(100, 140)
-            pygame.draw.rect(screen, (200, 150, 0), (x, y, 10, 10))
-    else:
-        w -= .1
     if w > 200:
         w = 200
     if w < 0:
       w = 0
     if w < 25:
+      FRowNum = 1
+      F2RowNum = 1
       color = (200,200,200)
       color2 = (200,200,200)
       
@@ -124,8 +118,8 @@ while not doExit:
     if D <= 50:
         RowNum = 3
         tank = (0, 210, 40)
-    if D <= 20:
-        w -= .2
+    if D <= 20 and w is not 0:
+    ,    w -= .2
         RowNum = 4
     if D > 120:
         RowNum = 0
@@ -134,8 +128,42 @@ while not doExit:
         D = 200
     if D < 0:
       D = 0
-    if D == 0:
-        w -= .3
+    
+    
+    if w == 0:
+      fVy -= .01
+      fVy2 -= .01
+      fVx = 0
+      fVx2 = 0
+      if fy or fy2 <= 120:
+        doExit = True
+    fx += fVx
+    fy += fVy
+    fx2 += fVx2
+    fy2 += fVy2
+    screen.fill((51, 42, 100))
+    #Fish drawn to the screen
+    screen.blit(Goldy, (fx, fy), (FframeWidth*FframeNum, FRowNum*FframeHeight, FframeWidth, FframeHeight))
+    screen.blit(Pinky, (fx2, fy2), (F2frameWidth*F2frameNum, F2RowNum*F2frameHeight, F2frameWidth, F2frameHeight))
+
+    #transparent water
+    s = pygame.Surface((600, 350))  # the size of your rect
+    s.set_alpha(75)  # alpha level
+    s.fill((tank))  # this fills the entire surface
+    screen.blit(s, (50, 100))  # (0,0) are the top-left coordinates
+
+    #checks if red button is being pressed and will feed the fish
+    if mousePos[0] > 600 and mousePos[0] < 700 and mousePos[
+            1] > 400 and mousePos[1] < 500:
+        print("fed")
+        w += 50
+        for i in range(5):
+            x = random.randrange(50, 640)
+            y = random.randrange(100, 140)
+            pygame.draw.rect(screen, (200, 150, 0), (x, y, 10, 10))
+    else:
+        w -= .1
+    
 
     pygame.draw.rect(screen, (105, 56, 0), (40, 450, 620, 100))
     pygame.draw.rect(screen, (85, 36, 0), (40, 450, 620, 100), 5)
