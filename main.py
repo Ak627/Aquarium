@@ -1,6 +1,6 @@
 import pygame
 import random
-
+from time import sleep
 pygame.init()
 
 screen = pygame.display.set_mode((700, 500))
@@ -14,6 +14,12 @@ Goldy.set_colorkey((255, 0, 255))
 
 Pinky = pygame.image.load('Pinkfish.png')
 Pinky.set_colorkey((255, 255, 255))
+
+Plant = pygame.image.load('Plant.png')
+Plant.set_colorkey((255,255,255))
+
+rock = pygame.image.load('rock.png')
+rock.set_colorkey((255, 255, 255))
 
 frameWidth = 100
 frameHeight = 100
@@ -29,6 +35,16 @@ F2frameWidth = 20
 F2frameHeight = 20
 F2RowNum = 0
 F2frameNum = 1
+
+plantWidth = 75
+plantHeight = 75
+PRowNum = 0
+PframeNum = 0
+
+rockWidth = 75
+rockHeight = 75
+RRowNum = 0
+RframeNum = 0
 
 fx = 350
 fy = 250
@@ -48,14 +64,27 @@ doExit = False
 D = 200
 w = 200
 tank = (0, 0, 255)
+
+score = 0
+
+def countup():
+    count = 1
+    
+    for x in range (1, count+1):
+        sleep(.02)
+        return 1
+        
+
 while not doExit:
 
     clock.tick(60)
     event = pygame.event.wait(10)
     xpos = 0
     ypos = 0
+    
+    score += countup()
+    print(score)
     mousePos = (xpos, ypos)
-
     #Input Section---------------------------------------------------------
     if event.type == pygame.MOUSEBUTTONDOWN:  #CLICK
         mousePos = event.pos
@@ -119,7 +148,7 @@ while not doExit:
         RowNum = 3
         tank = (0, 210, 40)
     if D <= 20 and w is not 0:
-    ,    w -= .2
+        w -= .2
         RowNum = 4
     if D > 120:
         RowNum = 0
@@ -143,9 +172,18 @@ while not doExit:
     fy2 += fVy2
     screen.fill((51, 42, 100))
     #Fish drawn to the screen
+    screen.blit(rock, (175,375), (rockWidth*RframeNum, RRowNum*rockHeight,rockWidth, rockHeight))
+
+    screen.blit(Plant,(400, 365), (plantWidth*PframeNum, PRowNum*plantHeight, plantWidth, plantHeight))
+    screen.blit(Plant,(100, 365), (plantWidth*PframeNum, PRowNum*plantHeight, plantWidth, plantHeight))
+    screen.blit(rock, (460,375), (rockWidth*RframeNum, RRowNum*rockHeight,rockWidth, rockHeight))
+
     screen.blit(Goldy, (fx, fy), (FframeWidth*FframeNum, FRowNum*FframeHeight, FframeWidth, FframeHeight))
     screen.blit(Pinky, (fx2, fy2), (F2frameWidth*F2frameNum, F2RowNum*F2frameHeight, F2frameWidth, F2frameHeight))
+    screen.blit(Plant,(250, 365), (plantWidth*PframeNum, PRowNum*plantHeight, plantWidth, plantHeight))
+    screen.blit(rock, (275,375), (rockWidth*RframeNum, RRowNum*rockHeight,rockWidth, rockHeight))
 
+    
     #transparent water
     s = pygame.Surface((600, 350))  # the size of your rect
     s.set_alpha(75)  # alpha level
@@ -179,6 +217,13 @@ while not doExit:
     pygame.draw.rect(screen, (0, 255, 0), (10, 20, w, 20))
     pygame.draw.rect(screen, (0, 0, 0), (10, 50, 200, 20))
     pygame.draw.rect(screen, (255, 255, 0), (10, 50, D, 20))
+    font = pygame.font.Font(None, 65)
+    text = font.render(str(score),1, (255,255,255))
+    screen.blit(text, (390,25))
+    text = font.render(str("Score: "),1, (255,255,255))
+    screen.blit(text, (250,25))
+    
+    
     pygame.display.flip()
   
 pygame.quit()
