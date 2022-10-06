@@ -18,13 +18,33 @@ Pinky.set_colorkey((255, 255, 255))
 Plant = pygame.image.load('Plant.png')
 Plant.set_colorkey((255,255,255))
 
+Tall = pygame.image.load('Tall.png')
+Tall.set_colorkey((255,255,255))
+
 rock = pygame.image.load('rock.png')
 rock.set_colorkey((255, 255, 255))
+
+broom = pygame.image.load('Broom.png')
+broom.set_colorkey((255, 255, 255))
+
+flakes = pygame.image.load('Flakes.png')
+flakes.set_colorkey((255, 255, 0))
+
+
+gruigi = pygame.image.load('gruigi.jpg')
+gruigi.set_colorkey((255,255,255))
+Gwidth = 293
+Gheight = 500
 
 frameWidth = 100
 frameHeight = 100
 RowNum = 0
 frameNum = 0
+
+Width = 100
+Height = 100
+RowN = 0
+frameN = 0
 
 FframeWidth = 20
 FframeHeight = 20
@@ -41,6 +61,11 @@ plantHeight = 75
 PRowNum = 0
 PframeNum = 0
 
+tallWidth = 75
+tallHeight = 120
+TRowNum = 0
+TframeNum = 0
+
 rockWidth = 75
 rockHeight = 75
 RRowNum = 0
@@ -56,6 +81,9 @@ fy2 = 200
 fVx2 = -4
 fVy2 = 2
 
+gx = 0
+gxpos = -293
+
 color = (255, 137, 0)
 color2 = (220, 12, 100)
 
@@ -66,7 +94,7 @@ w = 200
 tank = (0, 0, 255)
 
 score = 0
-
+bruh = False
 def countup():
     count = 1
     
@@ -131,13 +159,20 @@ while not doExit:
     else:
       color = (255, 137, 0)
       color2 = (220, 12, 100)
-    if mousePos[0] > 0 and mousePos[0] < 100 and mousePos[
-            1] > 400 and mousePos[1] < 500:
+    if mousePos[0] > 0 and mousePos[0] < 100 and mousePos[1] > 400 and mousePos[1] < 500:
         print("clean")
         D += 20
        
     else:
         D -= .1
+        
+    if mousePos[0] > 0 and mousePos[0] < 10 and mousePos[1] > 0 and mousePos[1] < 10:
+        bruh = True
+    else:
+        bruh = False
+        
+        
+        
     if D <= 120:
         RowNum = 1
         tank = (0, 70, 140)
@@ -170,19 +205,23 @@ while not doExit:
     fy += fVy
     fx2 += fVx2
     fy2 += fVy2
+    gxpos += gx
     screen.fill((51, 42, 100))
     #Fish drawn to the screen
     screen.blit(rock, (175,375), (rockWidth*RframeNum, RRowNum*rockHeight,rockWidth, rockHeight))
 
     screen.blit(Plant,(400, 365), (plantWidth*PframeNum, PRowNum*plantHeight, plantWidth, plantHeight))
     screen.blit(Plant,(100, 365), (plantWidth*PframeNum, PRowNum*plantHeight, plantWidth, plantHeight))
+    screen.blit(Tall,(350, 320), (tallWidth*TframeNum, TRowNum*tallHeight, tallWidth, tallHeight))
+    
+
     screen.blit(rock, (460,375), (rockWidth*RframeNum, RRowNum*rockHeight,rockWidth, rockHeight))
 
     screen.blit(Goldy, (fx, fy), (FframeWidth*FframeNum, FRowNum*FframeHeight, FframeWidth, FframeHeight))
     screen.blit(Pinky, (fx2, fy2), (F2frameWidth*F2frameNum, F2RowNum*F2frameHeight, F2frameWidth, F2frameHeight))
-    screen.blit(Plant,(250, 365), (plantWidth*PframeNum, PRowNum*plantHeight, plantWidth, plantHeight))
+    screen.blit(Plant, (250, 365), (plantWidth*PframeNum, PRowNum*plantHeight, plantWidth, plantHeight))
     screen.blit(rock, (275,375), (rockWidth*RframeNum, RRowNum*rockHeight,rockWidth, rockHeight))
-
+    screen.blit(Tall, (520, 320), (tallWidth*TframeNum, TRowNum*tallHeight, tallWidth, tallHeight))
     
     #transparent water
     s = pygame.Surface((600, 350))  # the size of your rect
@@ -213,10 +252,18 @@ while not doExit:
     
     pygame.draw.circle(screen, (255, 0, 0), (650, 450), 50)
     pygame.draw.circle(screen, (0, 0, 255), (50, 450), 50)
+    
+    screen.blit(broom, (0, 400), (Width*frameN, RowN*Height, Width, Height))
+    screen.blit(flakes, (600, 390), (Width*frameN, RowN*Height, Width, Height))
+    if bruh == True:
+        screen.blit(gruigi, (250, 0), (Gwidth*frameN, RowN*Gheight, Gwidth, Gheight))
+
+
     pygame.draw.rect(screen, (0, 0, 0), (10, 20, 200, 20))
-    pygame.draw.rect(screen, (0, 255, 0), (10, 20, w, 20))
+    pygame.draw.rect(screen, (255, 0, 0), (10, 20, w, 20))
+    
     pygame.draw.rect(screen, (0, 0, 0), (10, 50, 200, 20))
-    pygame.draw.rect(screen, (255, 255, 0), (10, 50, D, 20))
+    pygame.draw.rect(screen, (0, 0, 255), (10, 50, D, 20))
     font = pygame.font.Font(None, 65)
     text = font.render(str(score),1, (255,255,255))
     screen.blit(text, (390,25))
