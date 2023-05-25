@@ -95,13 +95,8 @@ tank = (0, 0, 255)
 
 score = 0
 bruh = False
-def countup():
-    count = 1
-    
-    for x in range (1, count+1):
-        sleep(.02)
-        return 1
-        
+
+ticker = 0
 
 while not doExit:
 
@@ -109,9 +104,10 @@ while not doExit:
     event = pygame.event.wait(10)
     xpos = 0
     ypos = 0
-    
-    score += countup()
-    print(score)
+    ticker += 1
+    if ticker % 100 == 0:
+        score += 1
+        ticker = 0
     mousePos = (xpos, ypos)
     #Input Section---------------------------------------------------------
     if event.type == pygame.MOUSEBUTTONDOWN:  #CLICK
@@ -145,7 +141,7 @@ while not doExit:
         fVx2 *= -1
     if fy2 < 100 or fy2 + 20 > 440:
         fVy2 *= -1
-    if w > 200:
+    if w >= 200:
         w = 200
     if w < 0:
       w = 0
@@ -199,7 +195,7 @@ while not doExit:
       fVy2 -= .01
       fVx = 0
       fVx2 = 0
-      if fy or fy2 <= 120:
+      if fy <= 120 and fy2 <= 120:
         doExit = True
     fx += fVx
     fy += fVy
@@ -230,8 +226,7 @@ while not doExit:
     screen.blit(s, (50, 100))  # (0,0) are the top-left coordinates
 
     #checks if red button is being pressed and will feed the fish
-    if mousePos[0] > 600 and mousePos[0] < 700 and mousePos[
-            1] > 400 and mousePos[1] < 500:
+    if mousePos[0] > 600 and mousePos[0] < 700 and mousePos[1] > 400 and mousePos[1] < 500 and w <= 200:
         print("fed")
         w += 50
         for i in range(5):
